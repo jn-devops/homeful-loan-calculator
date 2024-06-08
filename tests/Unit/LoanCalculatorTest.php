@@ -19,6 +19,7 @@ test('loan simulation', function (
     float $total_contract_price,
     float $appraised_value,
     float $loan_amount,
+    float $equity,
     int   $guess_months_to_pay,
     string $guess_market_segment,
     float $guess_loanable_value_multiplier,
@@ -28,6 +29,7 @@ test('loan simulation', function (
     float $guess_disposable_income_requirement_multiplier,
     float $guess_disposable_monthly_income,
     float $guess_joint_disposable_monthly_income,
+    float $guess_equity_requirement_amount,
     Borrower $co_borrower = null
 ) {
     expect($appraised_value)->toBeGreaterThanOrEqual($loan_amount);
@@ -55,7 +57,8 @@ test('loan simulation', function (
     expect($property->getDisposableIncomeRequirementMultiplier())->toBe($guess_disposable_income_requirement_multiplier);
     $loan = new Loan;
     $loan->setBorrower($borrower)->setProperty($property)
-        ->setLoanAmount(new Price(Money::of($loan_amount, 'PHP')));
+        ->setLoanAmount(new Price(Money::of($loan_amount, 'PHP')))
+        ->setEquity($equity);
     expect($loan->getMaximumMonthsToPay())->toBe($guess_months_to_pay);
     expect($property->getLoanableValueMultiplier())->toBe($guess_loanable_value_multiplier);
     expect($property->getLoanableValue()->inclusive()->getAmount()->toFloat())->toBe($guess_loanable_value);
@@ -64,12 +67,15 @@ test('loan simulation', function (
     expect($borrower->getDisposableMonthlyIncome($property)->inclusive()->getAmount()->toFloat())->toBe($guess_disposable_monthly_income);
     expect($borrower->getJointDisposableMonthlyIncome($property)->inclusive()->getAmount()->toFloat())->toBe($guess_joint_disposable_monthly_income);
     expect($borrower->getJointDisposableMonthlyIncome($property)->inclusive()->getAmount()->toFloat())->toBeGreaterThanOrEqual($loan->getMonthlyAmortizationAmount()->inclusive()->getAmount()->toFloat());
+    expect($loan->getEquityRequirementAmount()->inclusive()->getAmount()->toFloat())->toBe($guess_equity_requirement_amount);
     $data = LoanData::fromObject($loan);
     expect($data->toArray())->toBe([
         "loan_amount" => $loan->getLoanAmount()->inclusive()->getAmount()->toFloat(),
         "months_to_pay" => $loan->getMaximumMonthsToPay(),
         "annual_interest" => $loan->getAnnualInterestRate(),
         "monthly_amortization" => $loan->getMonthlyAmortizationAmount()->inclusive()->getAmount()->toFloat(),
+        "equity" => $loan->getEquity()->inclusive()->getAmount()->toFloat(),
+        "equity_requirement_amount" => $loan->getEquityRequirementAmount()->inclusive()->getAmount()->toFloat(),
         "borrower" => [
             "gross_monthly_income" => $loan->getBorrower()->getGrossMonthlyIncome()->inclusive()->getAmount()->toFloat(),
             "regional" => $loan->getBorrower()->getRegional(),
@@ -92,17 +98,19 @@ test('loan simulation', function (
         'gross_monthly_income' => 12000.0,
         'age' => 25,
         'total_contract_price' => 850000.0,
-        'appraised_value' => 800000.0,
-        'loan_amount' => 800000.0,
+        'appraised_value' => 850000.0,
+        'loan_amount' => 850000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
-        'guess_loanable_value' => 800000.0,
+        'guess_loanable_value' => 850000.0,
         'guess_annual_interest' => 0.03,
-        'guess_monthly_amortization' => 3373.0,
+        'guess_monthly_amortization' => 3584.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 4200.0,
-        'guess_joint_disposable_monthly_income' => 4200.0
+        'guess_joint_disposable_monthly_income' => 4200.0,
+        'guess_equity_requirement_amount' => 0.0,
     ],
     [
         'regional' => true,
@@ -111,6 +119,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -119,7 +128,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 3373.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 4200.0,
-        'guess_joint_disposable_monthly_income' => 4200.0
+        'guess_joint_disposable_monthly_income' => 4200.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => true,
@@ -131,6 +141,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -139,7 +150,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 4926.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5600.0,
-        'guess_joint_disposable_monthly_income' => 5600.0
+        'guess_joint_disposable_monthly_income' => 5600.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => false,
@@ -148,6 +160,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -156,7 +169,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 3373.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5250.0,
-        'guess_joint_disposable_monthly_income' => 5250.0
+        'guess_joint_disposable_monthly_income' => 5250.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => true,
@@ -165,6 +179,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -173,7 +188,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 3373.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5250.0,
-        'guess_joint_disposable_monthly_income' => 5250.0
+        'guess_joint_disposable_monthly_income' => 5250.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => false,
@@ -182,6 +198,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -190,7 +207,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 4926.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5950.0,
-        'guess_joint_disposable_monthly_income' => 5950.0
+        'guess_joint_disposable_monthly_income' => 5950.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => true,
@@ -199,6 +217,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -207,7 +226,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 4926.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5950.0,
-        'guess_joint_disposable_monthly_income' => 5950.0
+        'guess_joint_disposable_monthly_income' => 5950.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => false,
@@ -216,6 +236,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 264,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -224,7 +245,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 5583.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5950.0,
-        'guess_joint_disposable_monthly_income' => 5950.0
+        'guess_joint_disposable_monthly_income' => 5950.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => false,
@@ -233,6 +255,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 800000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 252,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -242,6 +265,7 @@ test('loan simulation', function (
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 5250.0,
         'guess_joint_disposable_monthly_income' => 5250.0,
+        'guess_equity_requirement_amount' => 50000.0,
     ],
     [
         'regional' => false,
@@ -253,6 +277,7 @@ test('loan simulation', function (
         'total_contract_price' => 3000000.0,
         'appraised_value' => 2900000.0,
         'loan_amount' => 2610000.0,
+        'equity' => 0.0,
         'guess_months_to_pay' => 360,
         'guess_market_segment' => 'open',
         'guess_loanable_value_multiplier' => 0.9,
@@ -262,6 +287,7 @@ test('loan simulation', function (
         'guess_disposable_income_requirement_multiplier' => 0.30,
         'guess_disposable_monthly_income' => 16200.0,
         'guess_joint_disposable_monthly_income' => 16200.0,
+        'guess_equity_requirement_amount' => 390000.0,
     ],
     [
         'regional' => true,
@@ -270,6 +296,7 @@ test('loan simulation', function (
         'total_contract_price' => 850000.0,
         'appraised_value' => 800000.0,
         'loan_amount' => 750000.0,
+        'equity' => 100000.0,
         'guess_months_to_pay' => 288,
         'guess_market_segment' => 'socialized',
         'guess_loanable_value_multiplier' => 1.0,
@@ -278,7 +305,8 @@ test('loan simulation', function (
         'guess_monthly_amortization' => 3656.0,
         'guess_disposable_income_requirement_multiplier' => 0.35,
         'guess_disposable_monthly_income' => 3150.0,
-        'guess_joint_disposable_monthly_income' => 5600.0 ,
+        'guess_joint_disposable_monthly_income' => 5600.0,
+        'guess_equity_requirement_amount' => 0.0,
         'co_borrower' => (new Borrower)->addWages(7000)->setBirthdate(Carbon::now()->addYears(-46))->setRegional(true)
     ],
 ]);
