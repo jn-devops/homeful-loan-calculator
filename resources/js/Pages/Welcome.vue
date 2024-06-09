@@ -1,9 +1,10 @@
-<script setup>
+<script setup xmlns="http://www.w3.org/1999/html">
 import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 import { ref, watch } from 'vue';
 
 defineProps({
@@ -26,11 +27,11 @@ defineProps({
 
 const form = useForm({
     age: 45,
-    regional: '1',
-    gross_monthly_income: 70000,
-    total_contract_price: 2700000,
-    appraised_value: 2650000,
-    loan: '',
+    regional: 0,
+    gross_monthly_income: 15000,
+    total_contract_price: 850000,
+    appraised_value: 850000,
+    loan_amount: '',
     equity: ''
 });
 
@@ -138,7 +139,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.age"
-                                            autofocus
+                                            min="0"
+                                            @click.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.age" />
@@ -147,11 +149,11 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                     <div class="mt-4">
                                         <InputLabel for="regional" value="Regional" />
 
-                                        <TextInput
+                                        <Checkbox
                                             id="regional"
-                                            type="text"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.regional"
+                                           checked="checked"
+                                            @click.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.regional" />
@@ -165,9 +167,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.gross_monthly_income"
-                                            min="8000"
                                             step="1000"
-                                            max="300000"
+                                            @click.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.gross_monthly_income" />
@@ -181,9 +182,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.total_contract_price"
-                                            min="500000"
                                             step="10000"
-                                            max="8000000"
+                                            @click.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.total_contract_price" />
@@ -197,9 +197,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.appraised_value"
-                                            min="400000"
                                             step="10000"
-                                            max="8000000"
+                                            @click.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.appraised_value" />
@@ -213,6 +212,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50l"
                                             v-model="form.loan_amount"
+                                            step="10000"
+                                            @change.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.loan_amount" />
@@ -226,22 +227,29 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             type="number"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.equity"
+                                            step="10000"
+                                            @change.prevent="submit"
                                         />
 
                                         <InputError class="mt-2" :message="form.errors.equity" />
                                     </div>
 
-                                    <div class="flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                            Calculate
-                                        </PrimaryButton>
-                                    </div>
+<!--                                    <div class="flex items-center justify-end mt-4">-->
+<!--                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">-->
+<!--                                            Calculate-->
+<!--                                        </PrimaryButton>-->
+<!--                                    </div>-->
                                 </form>
                             </div>
 
                             <div class="relative flex items-center gap-6 lg:items-end">
                                 <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
-                                    DOCS CARD CONTENT
+                                    -----------------------
+                                    <div class="flex items-center justify-end mt-4">
+                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click.prevent="submit">
+                                            Calculate
+                                        </PrimaryButton>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -271,13 +279,13 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Borrower</h2>
 
                                 <p class="text-sm/relaxed">
-                                    Gross Monthly Income: {{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}
+                                    Gross Monthly Income:<strong>{{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Regional: {{ loan_data?.borrower?.regional }}
+                                    Regional: <strong>{{ loan_data?.borrower?.regional }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Birthdate: {{ loan_data?.borrower?.birthdate }}
+                                    Birthdate: <strong>{{ loan_data?.borrower?.birthdate }}</strong>
                                 </p>
                             </div>
                         </a>
@@ -313,22 +321,22 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Property</h2>
 
                                 <p class="text-sm/relaxed">
-                                    Market Segment: {{ loan_data?.property?.market_segment }}
+                                    Market Segment: <strong>{{ loan_data?.property?.market_segment }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Total Contract Price: {{ PHPeso.format(loan_data?.property?.total_contract_price) }}
+                                    Total Contract Price: <strong>{{ PHPeso.format(loan_data?.property?.total_contract_price) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Appraised Value: {{ PHPeso.format(loan_data?.property?.appraised_value) }}
+                                    Appraised Value: <strong>{{ PHPeso.format(loan_data?.property?.appraised_value) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Loanable Multiplier: {{ loan_data?.property?.loanable_value_multiplier * 100 }}%
+                                    Loanable Multiplier: <strong>{{ loan_data?.property?.loanable_value_multiplier * 100 }}%</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Loanable Value: {{ PHPeso.format(loan_data?.property?.loanable_value) }}
+                                    Loanable Value: <strong>{{ PHPeso.format(loan_data?.property?.loanable_value) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Disposable Income Requirement Multiplier: {{ loan_data?.property?.disposable_income_requirement_multiplier * 100 }}%
+                                    Disposable Income Requirement Multiplier: <strong>{{ loan_data?.property?.disposable_income_requirement_multiplier * 100 }}%</strong>
                                 </p>
                             </div>
                         </a>
@@ -357,22 +365,22 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Loan</h2>
 
                                 <p class="text-sm/relaxed">
-                                    Loan Amount: {{ PHPeso.format(loan_data?.loan_amount) }}
+                                    Loan Amount: <strong>{{ PHPeso.format(loan_data?.loan_amount) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Months to Pay: {{ loan_data?.months_to_pay }}
+                                    Months to Pay: <strong>{{ loan_data?.months_to_pay }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Annual Interest: {{ loan_data?.annual_interest * 100 }}%
+                                    Annual Interest: <strong>{{ loan_data?.annual_interest * 100 }}%</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Monthly Amortization: {{ PHPeso.format(loan_data?.monthly_amortization) }}
+                                    Monthly Amortization: <strong>{{ PHPeso.format(loan_data?.monthly_amortization) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Equity: {{ PHPeso.format(loan_data?.equity) }}
+                                    Equity: <strong>{{ PHPeso.format(loan_data?.equity) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Equity Requirement Amount: {{ PHPeso.format(loan_data?.equity_requirement_amount) }}
+                                    Equity Requirement Amount: <strong>{{ PHPeso.format(loan_data?.equity_requirement_amount) }}</strong>
                                 </p>
                             </div>
                         </div>

@@ -2178,16 +2178,16 @@
         },
         {
             "name": "jn-devops/borrower",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/borrower.git",
-                "reference": "46baaa8ddf3f427b58316043f9c65a4debfdde7a"
+                "reference": "be2a27b32bb93d41d7533547a88babb9284252fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/borrower/zipball/46baaa8ddf3f427b58316043f9c65a4debfdde7a",
-                "reference": "46baaa8ddf3f427b58316043f9c65a4debfdde7a",
+                "url": "https://api.github.com/repos/jn-devops/borrower/zipball/be2a27b32bb93d41d7533547a88babb9284252fe",
+                "reference": "be2a27b32bb93d41d7533547a88babb9284252fe",
                 "shasum": ""
             },
             "require": {
@@ -2248,7 +2248,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/borrower/issues",
-                "source": "https://github.com/jn-devops/borrower/tree/v1.0.2"
+                "source": "https://github.com/jn-devops/borrower/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -2256,7 +2256,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-06T16:59:23+00:00"
+            "time": "2024-06-09T00:11:18+00:00"
         },
         {
             "name": "jn-devops/loan",
