@@ -27,7 +27,7 @@ defineProps({
 
 const form = useForm({
     age: 45,
-    regional: 0,
+    regional: true,
     gross_monthly_income: 15000,
     total_contract_price: 850000,
     appraised_value: 850000,
@@ -36,6 +36,7 @@ const form = useForm({
 });
 
 const loan_data = ref({});
+const counter = ref(0);
 
 watch (
     () => usePage().props.flash.event,
@@ -44,6 +45,7 @@ watch (
             case 'loan.calculated':
                 console.log(event?.data);
                 loan_data.value = event?.data;
+                counter.value = counter.value + 1;
                 break;
         }
     },
@@ -58,7 +60,7 @@ function handleImageError() {
 }
 const submit = () => {
     form.post(route('loan-calculator'), {
-
+        preserveScroll: true,
     });
 };
 
@@ -131,34 +133,6 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                         >
                             <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
                                 <form @submit.prevent="submit">
-                                    <div>
-                                        <InputLabel for="age" value="Age" />
-
-                                        <TextInput
-                                            id="age"
-                                            type="number"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
-                                            v-model="form.age"
-                                            min="0"
-                                            @click.prevent="submit"
-                                        />
-
-                                        <InputError class="mt-2" :message="form.errors.age" />
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="regional" value="Regional" />
-
-                                        <Checkbox
-                                            id="regional"
-                                            v-model="form.regional"
-                                           checked="checked"
-                                            @click.prevent="submit"
-                                        />
-
-                                        <InputError class="mt-2" :message="form.errors.regional" />
-                                    </div>
-
                                     <div class="mt-4">
                                         <InputLabel for="gross_monthly_income" value="Gross Monthly Income" />
 
@@ -168,10 +142,34 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.gross_monthly_income"
                                             step="1000"
-                                            @click.prevent="submit"
                                         />
-
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">*from pay slip</div>
                                         <InputError class="mt-2" :message="form.errors.gross_monthly_income" />
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="age" value="Age" />
+
+                                        <TextInput
+                                            id="age"
+                                            type="number"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
+                                            v-model="form.age"
+                                            min="0"
+                                        />
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">*from eKYC</div>
+                                        <InputError class="mt-2" :message="form.errors.age" />
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="regional" value="Regional" />
+
+                                        <Checkbox
+                                            id="regional"
+                                            v-model:checked="form.regional"
+                                        />
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">*from Jotform</div>
+                                        <InputError class="mt-2" :message="form.errors.regional" />
                                     </div>
 
                                     <div class="mt-4">
@@ -183,9 +181,8 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.total_contract_price"
                                             step="10000"
-                                            @click.prevent="submit"
                                         />
-
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">*from SKU</div>
                                         <InputError class="mt-2" :message="form.errors.total_contract_price" />
                                     </div>
 
@@ -198,58 +195,57 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
                                             v-model="form.appraised_value"
                                             step="10000"
-                                            @click.prevent="submit"
                                         />
-
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">*from Bank or Pag-IBIG</div>
                                         <InputError class="mt-2" :message="form.errors.appraised_value" />
                                     </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="loan_amount" value="Loan Amount" />
+                                    <template>
+                                        <div class="mt-4">
+                                            <InputLabel for="loan_amount" value="Loan Amount" />
 
-                                        <TextInput
-                                            id="loan_amount"
-                                            type="number"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50l"
-                                            v-model="form.loan_amount"
-                                            step="10000"
-                                            @change.prevent="submit"
-                                        />
+                                            <TextInput
+                                                id="loan_amount"
+                                                type="number"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50l"
+                                                v-model="form.loan_amount"
+                                                step="10000"
+                                            />
 
-                                        <InputError class="mt-2" :message="form.errors.loan_amount" />
+                                            <InputError class="mt-2" :message="form.errors.loan_amount" />
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <InputLabel for="equity" value="Equity" />
+
+                                            <TextInput
+                                                id="equity"
+                                                type="number"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
+                                                v-model="form.equity"
+                                                step="10000"
+                                            />
+
+                                            <InputError class="mt-2" :message="form.errors.equity" />
+                                        </div>
+                                    </template>
+
+                                    <div class="flex items-center justify-end mt-4">
+                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" v-show="counter === 0 || form.isDirty">
+                                            Calculate
+                                        </PrimaryButton>
                                     </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="equity" value="Equity" />
-
-                                        <TextInput
-                                            id="equity"
-                                            type="number"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-50"
-                                            v-model="form.equity"
-                                            step="10000"
-                                            @change.prevent="submit"
-                                        />
-
-                                        <InputError class="mt-2" :message="form.errors.equity" />
-                                    </div>
-
-<!--                                    <div class="flex items-center justify-end mt-4">-->
-<!--                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">-->
-<!--                                            Calculate-->
-<!--                                        </PrimaryButton>-->
-<!--                                    </div>-->
                                 </form>
                             </div>
 
                             <div class="relative flex items-center gap-6 lg:items-end">
                                 <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
-                                    -----------------------
-                                    <div class="flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click.prevent="submit">
-                                            Calculate
-                                        </PrimaryButton>
-                                    </div>
+<!--                                    -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--                                    <div class="flex items-center justify-end mt-4">-->
+<!--                                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click.prevent="submit" v-show="form.isDirty">-->
+<!--                                            Calculate-->
+<!--                                        </PrimaryButton>-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                         </a>
@@ -282,10 +278,10 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                     Gross Monthly Income:<strong>{{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Regional: <strong>{{ loan_data?.borrower?.regional }}</strong>
+                                    Birthdate: <strong>{{ loan_data?.borrower?.birthdate }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
-                                    Birthdate: <strong>{{ loan_data?.borrower?.birthdate }}</strong>
+                                    Regional: <strong>{{ loan_data?.borrower?.regional }}</strong>
                                 </p>
                             </div>
                         </a>
@@ -374,6 +370,10 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                     Annual Interest: <strong>{{ loan_data?.annual_interest * 100 }}%</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
+                                    Disposable Monthly Income (Joint): <strong>{{ PHPeso.format(loan_data?.joint_disposable_monthly_income) }}</strong>
+                                </p>
+
+                                <p class="text-sm/relaxed">
                                     Monthly Amortization: <strong>{{ PHPeso.format(loan_data?.monthly_amortization) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
@@ -381,6 +381,9 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 </p>
                                 <p class="text-sm/relaxed">
                                     Equity Requirement Amount: <strong>{{ PHPeso.format(loan_data?.equity_requirement_amount) }}</strong>
+                                </p>
+                                <p class="text-sm/relaxed">
+                                    Is Income Sufficient: <strong>{{ loan_data?.is_income_sufficient }}</strong>
                                 </p>
                             </div>
                         </div>

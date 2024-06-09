@@ -2178,16 +2178,16 @@
         },
         {
             "name": "jn-devops/borrower",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/borrower.git",
-                "reference": "be2a27b32bb93d41d7533547a88babb9284252fe"
+                "reference": "c9a2d49e56f187819d98f1da092c4bd5bdc14726"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/borrower/zipball/be2a27b32bb93d41d7533547a88babb9284252fe",
-                "reference": "be2a27b32bb93d41d7533547a88babb9284252fe",
+                "url": "https://api.github.com/repos/jn-devops/borrower/zipball/c9a2d49e56f187819d98f1da092c4bd5bdc14726",
+                "reference": "c9a2d49e56f187819d98f1da092c4bd5bdc14726",
                 "shasum": ""
             },
             "require": {
@@ -2248,7 +2248,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/borrower/issues",
-                "source": "https://github.com/jn-devops/borrower/tree/v1.0.3"
+                "source": "https://github.com/jn-devops/borrower/tree/v1.0.4"
             },
             "funding": [
                 {
@@ -2256,20 +2256,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-09T00:11:18+00:00"
+            "time": "2024-06-09T07:14:20+00:00"
         },
         {
             "name": "jn-devops/loan",
-            "version": "v1.1.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/loan.git",
-                "reference": "486e4663ae3d24e813e2a9788ca90bdd8c0269dc"
+                "reference": "80b6500d4dba0f478dd2facd7650d1bf6cce3b94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/loan/zipball/486e4663ae3d24e813e2a9788ca90bdd8c0269dc",
-                "reference": "486e4663ae3d24e813e2a9788ca90bdd8c0269dc",
+                "url": "https://api.github.com/repos/jn-devops/loan/zipball/80b6500d4dba0f478dd2facd7650d1bf6cce3b94",
+                "reference": "80b6500d4dba0f478dd2facd7650d1bf6cce3b94",
                 "shasum": ""
             },
             "require": {
@@ -2331,7 +2331,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/loan/issues",
-                "source": "https://github.com/jn-devops/loan/tree/v1.1.0"
+                "source": "https://github.com/jn-devops/loan/tree/v1.2.1"
             },
             "funding": [
                 {
@@ -2339,20 +2339,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-08T03:14:58+00:00"
+            "time": "2024-06-09T08:14:12+00:00"
         },
         {
             "name": "jn-devops/property",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/property.git",
-                "reference": "43f3e8d8b3150018e1e064a93249c475132847e2"
+                "reference": "b3216b27fb212013bd0d708bf2ac0394bf5a098e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/property/zipball/43f3e8d8b3150018e1e064a93249c475132847e2",
-                "reference": "43f3e8d8b3150018e1e064a93249c475132847e2",
+                "url": "https://api.github.com/repos/jn-devops/property/zipball/b3216b27fb212013bd0d708bf2ac0394bf5a098e",
+                "reference": "b3216b27fb212013bd0d708bf2ac0394bf5a098e",
                 "shasum": ""
             },
             "require": {
@@ -2412,7 +2412,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/property/issues",
-                "source": "https://github.com/jn-devops/property/tree/v1.0.1"
+                "source": "https://github.com/jn-devops/property/tree/v1.0.2"
             },
             "funding": [
                 {
@@ -2420,7 +2420,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-06T16:55:57+00:00"
+            "time": "2024-06-09T06:10:45+00:00"
         },
         {
             "name": "kelunik/certificate",

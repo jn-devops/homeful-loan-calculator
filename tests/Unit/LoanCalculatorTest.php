@@ -53,7 +53,7 @@ test('loan simulation', function (
         ->setTotalContractPrice(new Price(Money::of($total_contract_price, 'PHP')))
         ->setAppraisedValue(new Price(Money::of($appraised_value, 'PHP')));
 
-    expect($property->getMarketSegment()->value)->toBe($guess_market_segment);
+    expect($property->getMarketSegment()->getName())->toBe($guess_market_segment);
     expect($property->getDisposableIncomeRequirementMultiplier())->toBe($guess_disposable_income_requirement_multiplier);
     $loan = new Loan;
     $loan->setBorrower($borrower)->setProperty($property)
@@ -73,16 +73,18 @@ test('loan simulation', function (
         "loan_amount" => $loan->getLoanAmount()->inclusive()->getAmount()->toFloat(),
         "months_to_pay" => $loan->getMaximumMonthsToPay(),
         "annual_interest" => $loan->getAnnualInterestRate(),
+        "joint_disposable_monthly_income" => $loan->getJointDisposableMonthlyIncome()->inclusive()->getAmount()->toFloat(),
         "monthly_amortization" => $loan->getMonthlyAmortizationAmount()->inclusive()->getAmount()->toFloat(),
         "equity" => $loan->getEquity()->inclusive()->getAmount()->toFloat(),
         "equity_requirement_amount" => $loan->getEquityRequirementAmount()->inclusive()->getAmount()->toFloat(),
+        "is_income_sufficient" => $loan->getIsIncomeSufficient(),
         "borrower" => [
             "gross_monthly_income" => $loan->getBorrower()->getGrossMonthlyIncome()->inclusive()->getAmount()->toFloat(),
             "regional" => $loan->getBorrower()->getRegional(),
             "birthdate" => $loan->getBorrower()->getBirthdate()->format('Y-m-d'),
         ],
         "property" => [
-            "market_segment" => $loan->getProperty()->getMarketSegment()->value,
+            "market_segment" => $loan->getProperty()->getMarketSegment()->getName(),
             "total_contract_price" => $loan->getProperty()->getTotalContractPrice()->inclusive()->getAmount()->toFloat(),
             "appraised_value" => $loan->getProperty()->getAppraisedValue()->inclusive()->getAmount()->toFloat(),
             "default_loanable_value_multiplier" => $loan->getProperty()->getDefaultLoanableValueMultiplier(),
@@ -279,7 +281,7 @@ test('loan simulation', function (
         'loan_amount' => 2610000.0,
         'equity' => 0.0,
         'guess_months_to_pay' => 360,
-        'guess_market_segment' => 'open',
+        'guess_market_segment' => 'middle-income',
         'guess_loanable_value_multiplier' => 0.9,
         'guess_loanable_value' => 2610000.0,
         'guess_annual_interest' => 0.0625  ,
