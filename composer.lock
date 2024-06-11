@@ -2343,16 +2343,16 @@
         },
         {
             "name": "jn-devops/property",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/property.git",
-                "reference": "b3216b27fb212013bd0d708bf2ac0394bf5a098e"
+                "reference": "6bddfe7be487b857045fa854cff7cd6815de9683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/property/zipball/b3216b27fb212013bd0d708bf2ac0394bf5a098e",
-                "reference": "b3216b27fb212013bd0d708bf2ac0394bf5a098e",
+                "url": "https://api.github.com/repos/jn-devops/property/zipball/6bddfe7be487b857045fa854cff7cd6815de9683",
+                "reference": "6bddfe7be487b857045fa854cff7cd6815de9683",
                 "shasum": ""
             },
             "require": {
@@ -2412,7 +2412,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/property/issues",
-                "source": "https://github.com/jn-devops/property/tree/v1.0.2"
+                "source": "https://github.com/jn-devops/property/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -2420,7 +2420,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-09T06:10:45+00:00"
+            "time": "2024-06-11T00:26:39+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -10781,5 +10781,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

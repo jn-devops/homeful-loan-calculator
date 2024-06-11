@@ -5,6 +5,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Checkbox from "@/Components/Checkbox.vue";
+import TableComponent from '@/MyComponents/TableComponent.vue';
 import { ref, watch } from 'vue';
 
 defineProps({
@@ -131,7 +132,7 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                             id="docs-card"
                             class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
-                            <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
+                            <div id="screenshot-container" class="relative w-full">
                                 <form @submit.prevent="submit">
                                     <div class="mt-4">
                                         <InputLabel for="gross_monthly_income" value="Gross Monthly Income" />
@@ -252,9 +253,9 @@ let PHPeso = new Intl.NumberFormat('en-US', {
 
                         <a
                             href="#"
-                            class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
+                            class="rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
-                            <div
+                            <!-- <div
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
@@ -269,12 +270,28 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                         />
                                     </g>
                                 </svg>
-                            </div>
+                            </div> -->
 
-                            <div class="pt-3 sm:pt-5">
+                            <div class="pt-2 sm:pt-2">
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Borrower</h2>
-
-                                <p class="text-sm/relaxed">
+                                
+                                <TableComponent>
+                                    <template #thead>
+                                            <div class="grid grid-cols-3">
+                                                <p class="text-sm/relaxed">Gross Monthly Income:</p>
+                                                <p class="text-sm/relaxed">Birthdate:</p>
+                                                <p class="text-sm/relaxed">Regional:</p>
+                                            </div>
+                                        </template>
+                                        <template #tbody>
+                                            <div class="grid grid-cols-3">
+                                                <p class="text-sm/relaxed"><strong>{{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}</strong></p>
+                                                <p class="text-sm/relaxed"><strong>{{ loan_data?.borrower?.birthdate }}</strong></p>
+                                                <p class="text-sm/relaxed"><strong>{{ loan_data?.borrower?.regional }}</strong></p>
+                                            </div>
+                                        </template>
+                                    </TableComponent>
+                                <!-- <p class="text-sm/relaxed">
                                     Gross Monthly Income:<strong>{{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
@@ -282,15 +299,15 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 </p>
                                 <p class="text-sm/relaxed">
                                     Regional: <strong>{{ loan_data?.borrower?.regional }}</strong>
-                                </p>
+                                </p> -->
                             </div>
                         </a>
 
                         <a
                             href="#"
-                            class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
+                            class="rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
-                            <div
+                            <!-- <div
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
@@ -311,12 +328,45 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                         />
                                     </g>
                                 </svg>
-                            </div>
+                            </div> -->
 
-                            <div class="pt-3 sm:pt-5">
+                            <div class="pt-2 sm:pt-2">
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Property</h2>
-
-                                <p class="text-sm/relaxed">
+                                <TableComponent>
+                                <template #thead>
+                                    <div class="flex">
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Market Segment:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Total Contract Price:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Appraised Value:</p>
+                                        <p class="text-sm/relaxed flex-2 min-w-[150px]">Loanable Multiplier:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Loanable Value:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[300px]">Disposable Income Requirement Multiplier:</p>
+                                    </div>
+                                </template>
+                                <template #tbody>
+                                    <div class="flex">
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px] capitalize">
+                                            <strong>{{ loan_data?.property?.market_segment }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.property?.total_contract_price) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.property?.appraised_value) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ loan_data?.property?.loanable_value_multiplier * 100 }}%</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.property?.loanable_value) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[300px]">
+                                            <strong>{{ loan_data?.property?.disposable_income_requirement_multiplier * 100 }}%</strong>
+                                        </p>
+                                    </div>
+                                </template>
+                            </TableComponent>
+                                <!-- <p class="text-sm/relaxed">
                                     Market Segment: <strong>{{ loan_data?.property?.market_segment }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
@@ -333,14 +383,14 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 </p>
                                 <p class="text-sm/relaxed">
                                     Disposable Income Requirement Multiplier: <strong>{{ loan_data?.property?.disposable_income_requirement_multiplier * 100 }}%</strong>
-                                </p>
+                                </p> -->
                             </div>
                         </a>
 
                         <div
-                            class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800"
+                            class="rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800"
                         >
-                            <div
+                            <!-- <div
                                 class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                             >
                                 <svg
@@ -355,12 +405,54 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                         />
                                     </g>
                                 </svg>
-                            </div>
+                            </div> -->
 
-                            <div class="pt-3 sm:pt-5">
+                            <div class="pt-2 sm:pt-2">
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Loan</h2>
+                                <TableComponent>
+                                <template #thead>
+                                    <div class="flex">
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Loan Amount:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Months to Pay:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Annual Interest:</p>
+                                        <p class="text-sm/relaxed flex-2 min-w-[250px]">Disposable Monthly Income (Joint):</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Monthly Amortization:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Equity:</p>
+                                        <p class="text-sm/relaxed flex-2 min-w-[200px]">Equity Requirement Amount:</p>
+                                        <p class="text-sm/relaxed flex-1 min-w-[150px]">Is Income Sufficient:</p>
+                                    </div>
+                                </template>
+                                <template #tbody>
+                                    <div class="flex">
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.loan_amount) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ loan_data?.months_to_pay }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ loan_data?.annual_interest * 100 }}%</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-2 min-w-[250px]">
+                                            <strong>{{ PHPeso.format(loan_data?.joint_disposable_monthly_income) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.monthly_amortization) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ PHPeso.format(loan_data?.equity) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-2 min-w-[200px]">
+                                            <strong>{{ PHPeso.format(loan_data?.equity_requirement_amount) }}</strong>
+                                        </p>
+                                        <p class="text-xs/relaxed flex-1 min-w-[150px]">
+                                            <strong>{{ loan_data?.is_income_sufficient }}</strong>
+                                        </p>
+                                    </div>
+                                </template>
+                            </TableComponent>
 
-                                <p class="text-sm/relaxed">
+                                <!-- <p class="text-sm/relaxed">
                                     Loan Amount: <strong>{{ PHPeso.format(loan_data?.loan_amount) }}</strong>
                                 </p>
                                 <p class="text-sm/relaxed">
@@ -384,7 +476,7 @@ let PHPeso = new Intl.NumberFormat('en-US', {
                                 </p>
                                 <p class="text-sm/relaxed">
                                     Is Income Sufficient: <strong>{{ loan_data?.is_income_sufficient }}</strong>
-                                </p>
+                                </p> -->
                             </div>
                         </div>
                     </div>
