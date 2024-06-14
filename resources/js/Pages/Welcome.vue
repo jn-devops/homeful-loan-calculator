@@ -310,7 +310,7 @@ const content = regional ? "Yes" : "No";
                                             <p class="capitalize text-xl">
                                                 <strong>{{ loan_data?.borrower?.regional === true ? 'Yes' : 'No' }}</strong>
                                             </p>
-                                            <p class="text-sm text-gray-400">Regional</p>
+                                            <p class="text-sm text-gray-400">Outside NCR</p>
                                         </div>
                                     </div>
                                 </div>
@@ -492,7 +492,7 @@ const content = regional ? "Yes" : "No";
               </div>
               <div class="mt-4">
                 <p class="capitalize text-xl">
-                  <strong>{{ loan_data?.borrower?.regional }}</strong>
+                  <strong>{{ loan_data?.borrower?.regional === true ? 'Yes' : 'No' }}</strong>
                 </p>
                 <p class="text-sm text-gray-400">Outside NCR</p>
               </div>
@@ -628,7 +628,7 @@ const content = regional ? "Yes" : "No";
                   <RequestmoneyLogo class="w-8 h-8" />
                 </div>
                 <div>
-                  <p class="text-xl default_text-color">{{ loan_data?.is_income_sufficient }}</p>
+                  <p class="text-xl default_text-color">{{ loan_data?.is_income_sufficient === true ? 'Yes' : 'No' }}</p>
                   <p class="text-black text-sm">Income Insufficient</p>
                 </div>
               </div>
