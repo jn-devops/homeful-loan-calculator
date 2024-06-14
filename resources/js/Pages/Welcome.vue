@@ -14,6 +14,8 @@ import CalendarLogo from '@/MyComponents/CalendarLogo.vue';
 import PercentageLogo from '@/MyComponents/PercentageLogo.vue';
 import RevenueLogo from '@/MyComponents/RevenueLogo.vue';
 import DocumentLogo from '@/MyComponents/DocumentLogo.vue';
+import MortgageLogo from '@/MyComponents/MortgageLogo.vue';
+import RequestmoneyLogo from '@/MyComponents/RequestmoneyLogo.vue';
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 defineProps({
@@ -101,6 +103,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', checkScreenSize);
 });
+
+const regional = loan_data.value?.borrower?.regional;
+const content = regional ? "Yes" : "No";
 </script>
 
 <template>
@@ -112,7 +117,7 @@ onBeforeUnmount(() => {
             src="https://laravel.com/assets/img/welcome/background.svg"
         />
         <div
-            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
+            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white bg_layout"
         >
             <div class="relative w-full max-w-2xl px-4 lg:max-w-7xl">
                 <header class="grid grid-rows-1 md:grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
@@ -289,7 +294,7 @@ onBeforeUnmount(() => {
                                     <div class="font-bold default_text">
                                         <h1 class="default_title-text">Borrower Details</h1>
                                     </div>
-                                    <div class="bg-gray-50 rounded-lg grid grid-rows-1 mt-4 p-4">
+                                    <div class="bg-gray-50 rounded-lg grid grid-rows-1 mt-4 p-4 border hover:border-rose-500">
                                         <div class="">
                                             <p class="text-xl">
                                                 <strong>{{ PHPeso.format(loan_data?.borrower?.gross_monthly_income) }}</strong></p>
@@ -303,7 +308,7 @@ onBeforeUnmount(() => {
                                         </div>
                                         <div class="mt-4">
                                             <p class="capitalize text-xl">
-                                                <strong>{{ loan_data?.borrower?.regional }}</strong>
+                                                <strong>{{ loan_data?.borrower?.regional === true ? 'Yes' : 'No' }}</strong>
                                             </p>
                                             <p class="text-sm text-gray-400">Regional</p>
                                         </div>
@@ -313,7 +318,7 @@ onBeforeUnmount(() => {
                                     <div class="font-bold">
                                         <h1 class="default_title-text">Property Details</h1>
                                     </div>
-                                    <div class="bg-gray-50 grid grid-cols-2 mt-4">
+                                    <div class="bg-gray-50 grid grid-cols-2 rounded-lg mt-4 border hover:border-rose-500">
                                         <div class="p-4">
                                             <div class=" text-xl">
                                                 <p class="capitalize">
@@ -415,6 +420,38 @@ onBeforeUnmount(() => {
                                                 <p class="text-black text-sm">Monthy Amortization</p>
                                             </div>
                                         </div>
+                                        <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+                                            <!-- <LotAreaLogo /> -->
+                                             <div class="bg-white shadow-sm rounded-full p-2">
+                                                 <MortgageLogo class="w-10 h-10"/>
+                                             </div>
+                                            <div>
+                                                <p class="text-2xl default_text-color">{{ PHPeso.format(loan_data?.equity) }}</p>
+                                                <p class="text-black text-sm">Equity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 dark:text-white light:text-black gap-3 mt-2 font-bold">
+                                        <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+                                            <!-- <LotAreaLogo /> -->
+                                             <div class="bg-white shadow-sm rounded-full p-2">
+                                                 <DocumentLogo class="w-10 h-10"/>
+                                             </div>
+                                            <div>
+                                                <p class="text-2xl default_text-color">{{ PHPeso.format(loan_data?.equity_requirement_amount) }}</p>
+                                                <p class="text-black text-sm">Equity Requirement Amount</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+                                            <!-- <LotAreaLogo /> -->
+                                             <div class="bg-white shadow-sm rounded-full p-2">
+                                                 <RequestmoneyLogo class="w-10 h-10"/>
+                                             </div>
+                                            <div>
+                                                <p class="text-2xl default_text-color capitalize">{{ loan_data?.is_income_sufficient === true ? 'Yes' : 'No' }}</p>
+                                                <p class="text-black text-sm">Income Insufficient</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -429,7 +466,7 @@ onBeforeUnmount(() => {
         </div>
     </div>
     <Teleport to="body">
-    <RLIModal :show="showModal" @close-modal="showModal = false" class="block md:hidden lg:hidden xl:hidden">
+    <RLIModal :show="showModal" @close-modal="showModal = false" class="block md:hidden lg:hidden xl:hidden z-20">
       <template #default>
         <div class="flex justify-between items-center border-b-2 pb-3">
           <p class="font-bold text-xl">Result</p>
@@ -457,7 +494,7 @@ onBeforeUnmount(() => {
                 <p class="capitalize text-xl">
                   <strong>{{ loan_data?.borrower?.regional }}</strong>
                 </p>
-                <p class="text-sm text-gray-400">Regional</p>
+                <p class="text-sm text-gray-400">Outside NCR</p>
               </div>
             </div>
           </div>
@@ -515,54 +552,84 @@ onBeforeUnmount(() => {
           </div>
           <div class="mt-1">
             <div class="grid grid-cols-2 dark:text-white light:text-black gap-1 font-bold">
-              <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
                 <!-- <LotAreaLogo /> -->
                 <div class="bg-white shadow-sm rounded-full p-1">
-                  <ReceiveCashLogo class="w-10 h-10" />
+                  <ReceiveCashLogo class="w-8 h-8" />
                 </div>
                 <div>
                   <p class="text-xl default_text-color">{{ PHPeso.format(loan_data?.loan_amount) }}</p>
                   <p class="text-black text-sm">Loan Amount</p>
                 </div>
               </div>
-              <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
                 <!-- <LotAreaLogo /> -->
                 <div class="bg-white shadow-sm rounded-full p-1">
-                  <CalendarLogo class="w-10 h-10" />
+                  <CalendarLogo class="w-8 h-8" />
                 </div>
                 <div>
                   <p class="text-xl default_text-color">{{ loan_data?.months_to_pay }}</p>
                   <p class="text-black text-sm">Months to Pay</p>
                 </div>
               </div>
-              <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
                 <!-- <LotAreaLogo /> -->
                 <div class="bg-white shadow-sm rounded-full p-1">
-                  <PercentageLogo class="w-10 h-10" />
+                  <PercentageLogo class="w-8 h-8" />
                 </div>
                 <div>
                   <p class="text-xl default_text-color">{{ loan_data?.annual_interest * 100 }}%</p>
                   <p class="text-black text-sm">Annual Interest</p>
                 </div>
               </div>
-              <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
                 <!-- <LotAreaLogo /> -->
                 <div class="bg-white shadow-sm rounded-full p-1">
-                  <RevenueLogo class="w-10 h-10" />
+                  <RevenueLogo class="w-8 h-8" />
                 </div>
                 <div>
                   <p class="text-xl default_text-color">{{ PHPeso.format(loan_data?.joint_disposable_monthly_income) }}</p>
                   <p class="text-black text-sm">Disposable Monthly Income (Joint)</p>
                 </div>
               </div>
-              <div class="flex gap-2 bg-gray-50 p-2 items-center rounded-lg border hover:border-rose-600">
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
                 <!-- <LotAreaLogo /> -->
                 <div class="bg-white shadow-sm rounded-full p-1">
-                  <DocumentLogo class="w-10 h-10" />
+                  <DocumentLogo class="w-8 h-8" />
                 </div>
                 <div>
                   <p class="text-xl default_text-color">{{ PHPeso.format(loan_data?.monthly_amortization) }}</p>
                   <p class="text-black text-sm">Monthy Amortization</p>
+                </div>
+              </div>
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
+                <!-- <LotAreaLogo /> -->
+                <div class="bg-white shadow-sm rounded-full p-1">
+                  <MortgageLogo class="w-8 h-8" />
+                </div>
+                <div>
+                  <p class="text-xl default_text-color">{{ PHPeso.format(loan_data?.equity) }}</p>
+                  <p class="text-black text-sm">Equity</p>
+                </div>
+              </div>
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
+                <!-- <LotAreaLogo /> -->
+                <div class="bg-white shadow-sm rounded-full p-1">
+                  <DocumentLogo class="w-8 h-8" />
+                </div>
+                <div>
+                  <p class="text-xl default_text-color">{{ PHPeso.format(loan_data?.equity_requirement_amount) }}</p>
+                  <p class="text-black text-sm">Equity Requirement Amount</p>
+                </div>
+              </div>
+              <div class="flex gap-2 bg-gray-50 p-1 items-center rounded-lg border hover:border-rose-600">
+                <!-- <LotAreaLogo /> -->
+                <div class="bg-white shadow-sm rounded-full p-1">
+                  <RequestmoneyLogo class="w-8 h-8" />
+                </div>
+                <div>
+                  <p class="text-xl default_text-color">{{ loan_data?.is_income_sufficient }}</p>
+                  <p class="text-black text-sm">Income Insufficient</p>
                 </div>
               </div>
             </div>
@@ -594,5 +661,9 @@ onBeforeUnmount(() => {
 .default_title-text{
     color: #E5883C
 }
-
+.bg_layout{
+    background: url('../../img/BGLayout.png') center no-repeat ;
+    background-size: cover;
+    z-index: 1;
+}
 </style>
